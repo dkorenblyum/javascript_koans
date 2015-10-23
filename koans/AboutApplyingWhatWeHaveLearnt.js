@@ -1,7 +1,6 @@
-var _; //globals
+var _; // globals
 
 describe("About Applying What We Have Learnt", function() {
-
   var products;
 
   beforeEach(function () { 
@@ -17,7 +16,6 @@ describe("About Applying What We Have Learnt", function() {
   /*********************************************************************************/
 
   it("given I'm allergic to nuts and hate mushrooms, it should find a pizza I can eat (imperative)", function () {
-
     var i,j,hasMushrooms, productsICanEat = [];
 
     for (i = 0; i < products.length; i+=1) {
@@ -32,37 +30,39 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(productsICanEat.length).toBe(FILL_ME_IN);
+    expect(productsICanEat.length).toBe(1);
   });
 
   it("given I'm allergic to nuts and hate mushrooms, it should find a pizza I can eat (functional)", function () {
-
-      var productsICanEat = [];
-
+      var productsICanEat = products.filter(function(item){return item.containsNuts === false}).filter(function(item){return item.ingredients.indexOf('mushrooms') < 0})
       /* solve using filter() & all() / any() */
 
-      expect(productsICanEat.length).toBe(FILL_ME_IN);
+      expect(productsICanEat.length).toBe(1);
   });
 
   /*********************************************************************************/
 
   it("should add all the natural numbers below 1000 that are multiples of 3 or 5 (imperative)", function () {
-    
     var sum = 0;
+
     for(var i=1; i<1000; i+=1) {
       if (i % 3 === 0 || i % 5 === 0) {
         sum += i;
       }
     }
     
-    expect(sum).toBe(FILL_ME_IN);
+    expect(sum).toBe(233168);
   });
 
   it("should add all the natural numbers below 1000 that are multiples of 3 or 5 (functional)", function () {
+    var sum = _(_.range(1000)).reduce(function(previousValue,currentValue) {
+        if (currentValue % 3 === 0 || currentValue % 5 === 0){
+            previousValue += currentValue;
+        }
+   return previousValue;
+    })    /* try chaining range() and reduce(), range() is not supported, according to ben we dont need to create anything ourselves, so instead of creating my own range function, I created an array on the spot  */
 
-    var sum = FILL_ME_IN;    /* try chaining range() and reduce() */
-
-    expect(233168).toBe(FILL_ME_IN);
+    expect(233168).toBe(sum);
   });
 
   /*********************************************************************************/
@@ -75,19 +75,27 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   it("should count the ingredient occurrence (functional)", function () {
-    var ingredientCount = { "{ingredient name}": 0 };
+    var ingredientCount = 
+    products.map(function(obj){
+        var newArray = [];
+        for (var i = 0; i < obj["ingredients"].length; i++){
+        newArray.push(obj["ingredients"][i])}
+        return newArray;}).reduce(function(a, b){
+         return a.concat(b);
+    }).reduce(function(prev,current){
+        prev[current] = (prev[current] || 0) + 1;
+        return prev;
+    },{})
 
-    /* chain() together map(), flatten() and reduce() */
-
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   /*********************************************************************************/
-  /* UNCOMMENT FOR EXTRA CREDIT */
+  /* UNCOMMENT FOR ADVANCED */
   /*
   it("should find the largest prime factor of a composite number", function () {
   
